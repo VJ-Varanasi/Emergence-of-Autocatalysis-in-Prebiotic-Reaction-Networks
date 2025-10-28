@@ -1,17 +1,21 @@
 # Emergence-of-Autocatalysis-in-Prebiotic-Reaction-Networks
 Accompanying code repository for 'Emergence of Autocatalysis in Prebiotic Reaction Networks' by V. Varanasi and J. Korenaga
 
-This repository includes all code used to generate figures and simulations in the aforementioned manuscript. A breakdown of the files included can be found below: 
+## Overview
 
-1) **figures.ipynb:** The code used to produce the data and accompanying figures for the manuscript. All functions can be found within the script or in the corresponding helper files. 
-
-2) **RAF_Emergence_Sim.py:** Implementation of the RAF algorithm as introduced in 'W. Hordijk and M. Steel, Detecting autocatalytic, self-sustaining sets in chemical reaction systems'. This script is used to simulate the probability of observing an RAF set across multiple network sizes and average catalytic number, f, as shown in Fig 1 of the manuscript.  
-
-3) **catalytic_schemes.py:** Defines functions associated with the four catalytic schemes studied in the work. Code includes classes for theoretical models and functions used to generate catalytic sets in simulation. 
+This repository contains all code used to generate the figures and simulations in the manuscript.  
+It includes implementations of the RAF detection algorithm, catalytic scheme generators, and theoretical estimates introduced in the paper.
 
 
-4) **kauffman_network_helper.py:** Defines functions used to create Kauffman Networks and run the RAF detection algorithm
+## Repository Structure
 
-5) **theoretical_estimate_helper.py:** Defines functions used to implement the theory introduced in the paper. Code is labeled with the associated equation numbers of the manuscript. 
+| File | Description |
+|------|--------------|
+| **`figures.ipynb`** | Main Jupyter notebook used to produce all figures. Each cell is labeled with the corresponding figure number from the paper. |
+| **`RAF_Emergence_Sim.py`** | Implements the RAF detection algorithm following Hordijk & Steel (2004). Used to estimate the probability of observing an RAF set across network sizes `n` and mean catalysis `f`. |
+| **`catalytic_schemes.py`** | Defines the four catalytic schemes analyzed in the paper. Contains both analytical models and random generators for simulation. |
+| **`kauffman_network_helper.py`** | Functions for generating Kauffman networks and mapping molecule–reaction relations. |
+| **`theoretical_estimate_helper.py`** | Implements the closed-form theory described in Section III, with each function annotated by the corresponding equation number. |
+
 
 
