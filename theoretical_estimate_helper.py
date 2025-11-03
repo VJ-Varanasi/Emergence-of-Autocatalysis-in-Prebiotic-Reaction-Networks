@@ -10,7 +10,7 @@ def log_sum (vals):
         return 0
 
 # Estimates size of |B_k| (eq 11)
-def raf_term(k,mR, Q, k_prime = 163, n= 6, A1= 90 ):
+def raf_term(k,mR, Q, k_prime = 163, n= 6, A1= 96):
     C = Q * np.log(k_prime) - 2* n * k_prime *np.log(2)
     #bks = 0
     bks = []
