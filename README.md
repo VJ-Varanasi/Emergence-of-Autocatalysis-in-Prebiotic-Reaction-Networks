@@ -16,6 +16,7 @@ It includes implementations of the RAF detection algorithm, catalytic scheme gen
 | **`catalytic_schemes.py`** | Defines the four catalytic schemes analyzed in the paper. Contains both analytical models and random generators for simulation. |
 | **`kauffman_network_helper.py`** | Functions for generating Kauffman networks and mapping molecule–reaction relations. |
 | **`theoretical_estimate_helper.py`** | Implements the closed-form theory described in Section III, with each function annotated by the corresponding equation number. |
+| **`single_solutions.json`** | JSON containing the enumrated single catalyst irrRAFs. Reactions are indexed by number as implemented in kauffman_network_helper.py. |
 
 
 
