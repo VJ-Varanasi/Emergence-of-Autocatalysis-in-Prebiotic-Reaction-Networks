@@ -175,9 +175,9 @@ def RAF(F,R,C):
 
 
 # ---- Simulation parameters ----
-N = 25            # number of trials per setting (can vary if needed)
-ns = [10]      # network sizes
-fs = np.linspace(0, 2.5, 10)  # catalysis parameters
+N = 50            # number of trials per setting (can vary if needed)
+ns = [6,7,8]      # network sizes
+fs = [1, 1.25, 1.5]#np.linspace(1, 1.5, 5)  # catalysis parameters
 
 SAVE_PATH = "raf_results.csv"
 
@@ -187,7 +187,9 @@ if os.path.exists(SAVE_PATH):
 else:
     results_df = pd.DataFrame(columns=["n", "f", "trial_count", "raf_prob"])
 
-        
+
+# Multiprocessing edits done with GPT 5 assistance
+
 # -----------------------------
 # Single simulation function
 # -----------------------------

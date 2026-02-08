@@ -1,3 +1,5 @@
+import string
+import itertools
 
 #Returns dictionaries corresponding to the molecule set, food set, and reaction set as defined by a Kauffman Network with network size n
 def create_XFR(n, t = 2,k = 2):

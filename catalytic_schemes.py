@@ -1,3 +1,66 @@
+import numpy as np
+import string
+import itertools
+from scipy.stats import binom
+
+#Returns dictionaries corresponding to the molecule set, food set, and reaction set as defined by a Kauffman Network with network size n
+def create_XFR(n, t = 2,k = 2):
+    if n ==2:
+        t = 1
+
+    X = []
+    F = []
+    alphabet = string.ascii_uppercase[0:k]
+    for i in range(1, n+1):    
+        vals = [''.join(m) for m in itertools.product(alphabet, repeat=i)]
+        X = X + vals
+        if i <= t:
+            F = F + vals
+    
+    R = {}
+    react_count = 0
+    for i in range(len(X)):
+        cand = X[i] + X[i]
+        if len(cand) <= n:
+            R[react_count] = [[X[i], X[i]], [cand]]
+            react_count +=1
+            #Lysis Reaction
+            R[react_count] = [[cand],[X[i], X[i]]]
+            react_count +=1
+
+        for j in range(i+1, len(X)):
+            cand1 = X[i] + X[j]
+            cand2 = X[j] + X[i]
+            if len(cand1) <= n:
+            
+                if cand2 != cand1:
+                    # Includes Reflexivity Condition
+                    if [[X[j], X[i]], [cand1]] not in list(R.values()):
+                        R[react_count] = [[X[i], X[j]], [cand1]]
+                        react_count +=1
+                    
+                    if [[cand1],[X[j], X[i]]] not in list(R.values()):
+                        R[react_count] = [[cand1],[X[i], X[j]]]
+                        react_count +=1
+                    
+                    if [[X[i], X[j]], [cand2]] not in list(R.values()):
+                        R[react_count] = [[X[j], X[i]], [cand2]]
+                        react_count +=1
+                    
+                    if [[cand2],[X[i], X[j]]] not in list(R.values()):
+                        R[react_count] = [[cand2],[X[j], X[i]]]
+                        react_count +=1
+                else:
+                    if [[X[j], X[i]], [cand1]] not in list(R.values()):
+                        R[react_count] = [[X[i], X[j]], [cand1]]
+                        react_count +=1
+                    
+
+                    if [[cand1],[X[j], X[i]]] not in list(R.values()):
+                        R[react_count] = [[cand1],[X[i], X[j]]]
+                        react_count +=1
+    
+    return(X,F, R)
 
 # Class used to produce theoretical estimates of Uniform Catalysis Scheme
 class uniformCatalysis:
@@ -242,3 +305,101 @@ class SparseCatalysis:
         w = binom.pmf(m, self.len_X, self.p)                # weights P(K=k)
         c_total = (m * self.len_R/2).astype(int)                            # trials in the conditional binomial
         return np.sum(w * binom.pmf(k, c_total, 1/self.n))
+
+
+
+# Functions used to produce catalyst sets for simulation
+
+def create_uniform_catalysts (X, react_count, f):
+    C = {}
+    p = f/(react_count/2)
+    for i in X:
+        #print(X)
+        for j in range(1, react_count,2):
+            if np.random.random(1)[0] < p:
+                k = -1
+                if j in C.keys():
+                    if i not in C[j]:
+                        C[j].append(i)
+                else:
+                    C[j]= [i]
+
+                if j+k in C.keys():
+                    if i not in C[j+k]:
+                        C[j+k].append(i)
+                else:
+                    C[j+k]= [i]
+    return C    
+
+def create_powerlaw_catalysts (X, react_count, s):
+    C = {}
+    for i in X:
+        num_cats = np.random.zipf(s, 1)[0] - 1
+        num_cats = min(num_cats, react_count)
+
+        #print(num_cats)
+        selections = np.random.choice(np.arange(1, react_count/2), size =int(num_cats))
+        #print(selections)
+
+        for j in selections:
+            if j %2 ==1:
+                k = -1
+            else:
+                k = 1
+            if j in C.keys():
+                if i not in C[j]:
+                    C[j].append(i)
+            else:
+                C[j]= [i]
+
+            if j+k in C.keys():
+                if i not in C[j+k]:
+                    C[j+k].append(i)
+            else:
+                C[j+k]= [i]
+    return C  
+
+
+
+def create_allornone_catalysts (X, react_count, f):
+    C = {}
+    p = f/(react_count/2)
+    for i in X:
+        if np.random.random(1)[0] < p:
+        #print(X)
+            for j in range(1, react_count,2):
+                k = -1
+                if j in C.keys():
+                    if i not in C[j]:
+                        C[j].append(i)
+                else:
+                    C[j]= [i]
+
+                if j+k in C.keys():
+                    if i not in C[j+k]:
+                        C[j+k].append(i)
+                else:
+                    C[j+k]= [i]
+    return C
+
+
+def create_sparse_catalysts (X, react_count, f, n =6):
+    C = {}
+    p = n*f/(react_count/2)
+    for i in X:
+        if np.random.random(1)[0] < p:
+            for j in range(1, react_count,2):
+                if np.random.random(1)[0] < 1/n:
+                    k = -1
+                    if j in C.keys():
+                        if i not in C[j]:
+                            C[j].append(i)
+                    else:
+                        C[j]= [i]
+
+                    if j+k in C.keys():
+                        if i not in C[j+k]:
+                            C[j+k].append(i)
+                    else:
+                        C[j+k]= [i]
+    return C         
